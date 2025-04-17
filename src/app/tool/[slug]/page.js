@@ -44,10 +44,8 @@ export default async function ToolPage({ params }) {
         />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-
       {/* Header */}
       <Navbar />
-
       <main className="min-h-screen  text-white px-6 py-12">
         <div className="max-w-3xl mx-auto bg-white/5 p-8 rounded-2xl shadow-lg border border-white/10">
           <h1 className="text-4xl font-extrabold mb-2 bg-gradient-to-r to-purple-500 text-transparent bg-clip-text">
@@ -124,7 +122,8 @@ export default async function ToolPage({ params }) {
             </div>
           </div>
         )}
-      </main>Zz
+      </main>
+      Zz
     </>
   );
 }
