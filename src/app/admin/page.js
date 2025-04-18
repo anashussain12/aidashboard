@@ -320,7 +320,7 @@ export default function AdminPage() {
                       <button
                         className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm"
                         onClick={() =>
-                          window.open(`/tool/${tool.slug}`, "_blank")
+                          window.open(`${tool.slug}`, "_blank")
                         }
                       >
                         View

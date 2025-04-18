@@ -131,8 +131,8 @@ export default function Home() {
                       </p>
 
                       <Link
-                        href={`/tool/${tool.slug}`}
-                        className="inline-block mt-2 text-sm font-medium bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition"
+                        href={tool.slug}
+                        className="inline-block mt-2 text-sm font-medium bg-[#9901BF] hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition"
                       >
                         View Tool
                       </Link>

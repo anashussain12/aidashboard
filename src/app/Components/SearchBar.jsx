@@ -42,8 +42,8 @@ const SearchBar = ({
             onClick={() => onCategoryChange(filter)}
             className={`px-4 py-2 rounded-full border text-sm font-medium shadow-md transition ${
               activeCategory === filter
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-gray-800 text-white border-gray-600 hover:bg-blue-600"
+                ? "bg-[#9901BF] text-white "
+                : "bg-gray-800 text-white border-gray-800 hover:bg-[#9901BF]"
             }`}
           >
             {filter}
