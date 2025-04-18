@@ -123,7 +123,6 @@ export default async function ToolPage({ params }) {
           </div>
         )}
       </main>
-      Zz
     </>
   );
 }
