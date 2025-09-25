@@ -32,21 +32,6 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [editingToolId, setEditingToolId] = useState(null);
-  const [user, setUser] = useState(null);
-  const router = useRouter();
-
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       setUser(user);
-  //     } else {
-  //       router.push("/login");
-  //     }
-  //   });
-
-  //   fetchTools();
-  //   return () => unsubscribe();
-  // }, []);
 
   const fetchTools = async () => {
     const querySnapshot = await getDocs(collection(db, "tools"));

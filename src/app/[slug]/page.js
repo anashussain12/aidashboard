@@ -21,7 +21,7 @@ export default async function ToolPage({ params }) {
   if (!tool) {
     return (
       <main className="min-h-screen flex items-center justify-center text-white">
-        <h1 className="text-2xl">❌ Tool not found</h1>
+        <h1 className="text-2xl">❌ Not found</h1>
       </main>
     );
   }

@@ -84,16 +84,6 @@ const Navbar = () => {
                 <FiMenu size={32} />
               </button>
             </div>
-
-            {/* Button */}
-            <div className="hidden md:block">
-              <Link
-                href="/admin"
-                className="px-4 py-2 bg-[#9901BF] text-white rounded-full"
-              >
-                Submit a tool
-              </Link>
-            </div>
           </div>
         )}
 
