@@ -80,14 +80,15 @@ export default async function ToolPage({ params }) {
               </p>
             )}
 
-            <a
-              href={tool.link}
+            <Link
+              href={tool.link.startsWith('http') ? tool.link : `https://${tool.link}`}
+
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105"
             >
               🚀 Visit {tool.name}
-            </a>
+            </Link>
           </div>
         </div>
 

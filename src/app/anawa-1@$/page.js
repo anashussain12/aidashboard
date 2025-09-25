@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { db, auth, storage } from "../lib/firebase";
+import { db,auth } from "../lib/firebase";
 import {
   collection,
   addDoc,
@@ -12,13 +12,11 @@ import {
   doc,
   Timestamp,
 } from "firebase/firestore";
-// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// You can remove these imports if not needed:
-
+import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
-// import { onAuthStateChanged } from "firebase/auth";
 
 export default function AdminPage() {
+  const [user, setUser] = useState(null);
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -32,7 +30,21 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [editingToolId, setEditingToolId] = useState(null);
+  const router = useRouter();
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    if (currentUser) {
+      setUser(currentUser);
+    } else {
+      router.push("/login");
+    }
+  });
+}, [router]);
 
+
+
+
+  // Fetch tools from Firebase
   const fetchTools = async () => {
     const querySnapshot = await getDocs(collection(db, "tools"));
     const toolList = querySnapshot.docs.map((doc) => ({
@@ -44,6 +56,11 @@ export default function AdminPage() {
     );
     setTools(sortedTools);
   };
+
+  // Fetch tools on mount
+  useEffect(() => {
+    fetchTools();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,7 +101,9 @@ export default function AdminPage() {
         longDescription: "",
       });
       setEditingToolId(null);
-      fetchTools();
+
+      // Refresh tools after add/update
+      await fetchTools();
     } catch (error) {
       console.error("Error saving tool: ", error);
       setMessage("❌ Failed to save tool.");
@@ -104,10 +123,13 @@ export default function AdminPage() {
     data.append("upload_preset", "aitoolsdashboard"); // change to your preset
 
     try {
-      const res = await fetch("https://api.cloudinary.com/v1_1/dlxldpmsp/image/upload", {
-        method: "POST",
-        body: data,
-      });
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dlxldpmsp/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
       const result = await res.json();
       if (result.secure_url) {
@@ -121,9 +143,6 @@ export default function AdminPage() {
       setMessage("❌ Failed to upload image.");
     }
   };
-
-
-
 
   const handleDelete = async (id) => {
     try {
@@ -172,10 +191,19 @@ export default function AdminPage() {
 
   const categories = ["Text", "Image", "Chatbots", "Code", "Video"];
 
+  // Normalize link (ensure it opens correctly)
+  const normalizeLink = (link) => {
+    if (!link) return "#";
+    return link.startsWith("http://") || link.startsWith("https://")
+      ? link
+      : `https://${link}`;
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#43203c] to-[#40044a75] text-white px-6 py-12">
       <Head>
         <title>Admin Panel | Alpha Tools</title>
+        <meta name="robots" content="noindex, nofollow" />
       </Head>
 
       <header className="flex justify-between items-center max-w-4xl mx-auto mb-10">
@@ -189,6 +217,7 @@ export default function AdminPage() {
       </header>
 
       <div className="max-w-4xl mx-auto">
+        {/* Form */}
         <form
           onSubmit={handleSubmit}
           className="space-y-4 bg-white/5 p-6 rounded-xl border border-white/10 shadow mb-12"
@@ -262,6 +291,7 @@ export default function AdminPage() {
           {message && <p className="mt-4 text-sm text-green-400">{message}</p>}
         </form>
 
+        {/* Bulk Delete */}
         {selectedTools.length > 0 && (
           <div className="mb-6 flex justify-end">
             <button
@@ -273,8 +303,11 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* Tool List */}
         {categories.map((cat) => {
-          const toolsInCategory = tools.filter((tool) => tool.category === cat);
+          const toolsInCategory = tools.filter(
+            (tool) => tool.category === cat
+          );
           if (toolsInCategory.length === 0) return null;
           return (
             <div key={cat} className="mb-10">
@@ -288,9 +321,7 @@ export default function AdminPage() {
                     className="bg-white/5 p-5 rounded-xl border border-white/10 shadow-md"
                   >
                     <div className="flex items-start justify-between">
-                      <h3 className="text-xl font-semibold mb-2">
-                        {tool.name}
-                      </h3>
+                      <h3 className="text-xl font-semibold mb-2">{tool.name}</h3>
                       <input
                         type="checkbox"
                         checked={selectedTools.includes(tool.id)}
@@ -305,7 +336,7 @@ export default function AdminPage() {
                       <button
                         className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm"
                         onClick={() =>
-                          window.open(`${tool.slug}`, "_blank")
+                          window.open(normalizeLink(tool.link), "_blank")
                         }
                       >
                         View

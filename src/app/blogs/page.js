@@ -21,10 +21,10 @@ export default async function BlogPage() {
   return (
     <section
       className="min-h-screen max-w-7xl mx-auto px-6 py-20"
-      // style={{
-      //   background:
-      //     "linear-gradient(270deg, #130428, #130428, #38126D, #130428, #130428)",
-      // }}
+    // style={{
+    //   background:
+    //     "linear-gradient(270deg, #130428, #130428, #38126D, #130428, #130428)",
+    // }}
     >
       {/* Header */}
       <div className="text-center mb-16">

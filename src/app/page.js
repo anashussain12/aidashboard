@@ -8,7 +8,6 @@ import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import SearchBar from "./Components/SearchBar";
 import Discover from "./Components/Discover";
 import Aitoolscategory from "./Components/AiToolsCategory";
-import BlogPage from "./Components/BlogsPage";
 import FAQ from "./Components/FAQS";
 
 export default function Home() {
@@ -170,7 +169,6 @@ export default function Home() {
                 </div>
               )}
             </section>
-            <BlogPage />
             <FAQ />
           </div>
         </main>
