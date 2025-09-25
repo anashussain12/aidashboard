@@ -31,16 +31,33 @@ export default function AdminPage() {
   const [message, setMessage] = useState("");
   const [editingToolId, setEditingToolId] = useState(null);
   const router = useRouter();
-useEffect(() => {
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  useEffect(() => {
   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
     if (currentUser) {
       setUser(currentUser);
-    } else {
-      router.push("/login");
+    } 
+    setCheckingAuth(false); // done checking
+    if (!currentUser) {
+      router.push("/login"); // redirect if not authenticated
     }
   });
-}, [router]);
 
+  return () => unsubscribe();
+}, []);
+
+if (checkingAuth) {
+  return (
+    <div className="flex items-center justify-center min-h-screen text-white">
+      Loading...
+    </div>
+  );
+}
+
+if (!user) {
+  return null; // user will be redirected
+}
 
 
 
