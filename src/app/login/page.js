@@ -14,7 +14,7 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/admin"); // redirect to admin
+      router.push("/anawa-1@$"); // redirect to admin
     } catch (err) {
       setError("Invalid credentials");
     }

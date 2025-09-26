@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { db,auth } from "../lib/firebase";
+import { db, auth } from "../lib/firebase";
 import {
   collection,
   addDoc,
@@ -17,6 +17,8 @@ import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
   const [user, setUser] = useState(null);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [tools, setTools] = useState([]);
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -25,59 +27,59 @@ export default function AdminPage() {
     category: "",
     longDescription: "",
   });
-  const [tools, setTools] = useState([]);
   const [selectedTools, setSelectedTools] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [editingToolId, setEditingToolId] = useState(null);
   const router = useRouter();
-  const [checkingAuth, setCheckingAuth] = useState(true);
 
+  // ✅ Auth effect
   useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    if (currentUser) {
-      setUser(currentUser);
-    } 
-    setCheckingAuth(false); // done checking
-    if (!currentUser) {
-      router.push("/login"); // redirect if not authenticated
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        router.push("/login");
+      }
+      setCheckingAuth(false);
+    });
+    return () => unsubscribe();
+  }, [router]);
+
+  // ✅ Define fetchTools once (useCallback so we can reuse it)
+  const fetchTools = useCallback(async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "tools"));
+      const toolList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const sortedTools = toolList.sort(
+        (a, b) => b.createdAt?.seconds - a.createdAt?.seconds
+      );
+      setTools(sortedTools);
+    } catch (err) {
+      console.error("Error fetching tools:", err);
     }
-  });
+  }, []);
 
-  return () => unsubscribe();
-}, []);
-
-if (checkingAuth) {
-  return (
-    <div className="flex items-center justify-center min-h-screen text-white">
-      Loading...
-    </div>
-  );
-}
-
-if (!user) {
-  return null; // user will be redirected
-}
-
-
-
-  // Fetch tools from Firebase
-  const fetchTools = async () => {
-    const querySnapshot = await getDocs(collection(db, "tools"));
-    const toolList = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    const sortedTools = toolList.sort(
-      (a, b) => b.createdAt?.seconds - a.createdAt?.seconds
-    );
-    setTools(sortedTools);
-  };
-
-  // Fetch tools on mount
+  // ✅ Run once on mount
   useEffect(() => {
     fetchTools();
-  }, []);
+  }, [fetchTools]);
+
+  // ✅ Loading UI while checking auth
+  if (checkingAuth) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // already redirected
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,6 +111,7 @@ if (!user) {
         setMessage("✅ Tool added successfully!");
       }
 
+      // Reset form
       setForm({
         name: "",
         description: "",
@@ -119,7 +122,7 @@ if (!user) {
       });
       setEditingToolId(null);
 
-      // Refresh tools after add/update
+      // Refresh tools
       await fetchTools();
     } catch (error) {
       console.error("Error saving tool: ", error);
@@ -208,7 +211,6 @@ if (!user) {
 
   const categories = ["Text", "Image", "Chatbots", "Code", "Video"];
 
-  // Normalize link (ensure it opens correctly)
   const normalizeLink = (link) => {
     if (!link) return "#";
     return link.startsWith("http://") || link.startsWith("https://")
@@ -322,9 +324,7 @@ if (!user) {
 
         {/* Tool List */}
         {categories.map((cat) => {
-          const toolsInCategory = tools.filter(
-            (tool) => tool.category === cat
-          );
+          const toolsInCategory = tools.filter((tool) => tool.category === cat);
           if (toolsInCategory.length === 0) return null;
           return (
             <div key={cat} className="mb-10">
