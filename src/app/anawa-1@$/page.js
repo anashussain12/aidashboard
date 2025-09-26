@@ -12,7 +12,7 @@ import {
   doc,
   Timestamp,
 } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
@@ -46,7 +46,7 @@ export default function AdminPage() {
     return () => unsubscribe();
   }, [router]);
 
-  // ✅ Define fetchTools once (useCallback so we can reuse it)
+  // ✅ Fetch tools
   const fetchTools = useCallback(async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "tools"));
@@ -63,12 +63,21 @@ export default function AdminPage() {
     }
   }, []);
 
-  // ✅ Run once on mount
   useEffect(() => {
     fetchTools();
   }, [fetchTools]);
 
-  // ✅ Loading UI while checking auth
+  // ✅ Logout handler
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  // ✅ Loading state
   if (checkingAuth) {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
@@ -77,10 +86,9 @@ export default function AdminPage() {
     );
   }
 
-  if (!user) {
-    return null; // already redirected
-  }
+  if (!user) return null;
 
+  // ✅ Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -100,8 +108,7 @@ export default function AdminPage() {
       };
 
       if (editingToolId) {
-        const toolRef = doc(db, "tools", editingToolId);
-        await updateDoc(toolRef, dataToSave);
+        await updateDoc(doc(db, "tools", editingToolId), dataToSave);
         setMessage("✅ Tool updated successfully!");
       } else {
         await addDoc(collection(db, "tools"), {
@@ -111,7 +118,6 @@ export default function AdminPage() {
         setMessage("✅ Tool added successfully!");
       }
 
-      // Reset form
       setForm({
         name: "",
         description: "",
@@ -121,8 +127,6 @@ export default function AdminPage() {
         longDescription: "",
       });
       setEditingToolId(null);
-
-      // Refresh tools
       await fetchTools();
     } catch (error) {
       console.error("Error saving tool: ", error);
@@ -140,24 +144,18 @@ export default function AdminPage() {
 
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", "aitoolsdashboard"); // change to your preset
+    data.append("upload_preset", "aitoolsdashboard");
 
     try {
       const res = await fetch(
         "https://api.cloudinary.com/v1_1/dlxldpmsp/image/upload",
-        {
-          method: "POST",
-          body: data,
-        }
+        { method: "POST", body: data }
       );
-
       const result = await res.json();
       if (result.secure_url) {
         setForm((prev) => ({ ...prev, image: result.secure_url }));
         setMessage("✅ Image uploaded successfully.");
-      } else {
-        throw new Error("Upload failed");
-      }
+      } else throw new Error("Upload failed");
     } catch (error) {
       console.error("Error uploading image:", error);
       setMessage("❌ Failed to upload image.");
@@ -175,9 +173,7 @@ export default function AdminPage() {
 
   const handleBulkDelete = async () => {
     try {
-      await Promise.all(
-        selectedTools.map((id) => deleteDoc(doc(db, "tools", id)))
-      );
+      await Promise.all(selectedTools.map((id) => deleteDoc(doc(db, "tools", id))));
       setTools(tools.filter((tool) => !selectedTools.includes(tool.id)));
       setSelectedTools([]);
       setMessage("🗑️ Selected tools deleted!");
@@ -213,96 +209,104 @@ export default function AdminPage() {
 
   const normalizeLink = (link) => {
     if (!link) return "#";
-    return link.startsWith("http://") || link.startsWith("https://")
-      ? link
-      : `https://${link}`;
+    return link.startsWith("http") ? link : `https://${link}`;
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#43203c] to-[#40044a75] text-white px-6 py-12">
+    <main className="min-h-screen bg-gradient-to-br from-[#1e1e2f] to-[#2a0d35] text-white">
       <Head>
         <title>Admin Panel | Alpha Tools</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
-      <header className="flex justify-between items-center max-w-4xl mx-auto mb-10">
-        <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-        <Link
-          href="/"
-          className="text-sm px-4 py-2 rounded-lg border border-white/20 hover:bg-white/10 transition"
-        >
-          Back to Home
-        </Link>
-      </header>
+      {/* 🔹 Navbar */}
+      <nav className="bg-[#2c1a3f] px-6 py-4 flex justify-between items-center shadow-lg">
+        <h1 className="text-2xl font-bold">⚡ Alpha Tools Admin</h1>
+        <div className="flex gap-4 items-center">
+          
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition"
+          >
+            Logout
+          </button>
+        </div>
+      </nav>
 
-      <div className="max-w-4xl mx-auto">
+      {/* 🔹 Content */}
+      <div className="max-w-5xl mx-auto px-6 py-10">
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="space-y-4 bg-white/5 p-6 rounded-xl border border-white/10 shadow mb-12"
+          className="space-y-4 bg-[#252537] p-6 rounded-xl border border-white/10 shadow-xl mb-12"
         >
-          <input
-            type="text"
-            name="name"
-            placeholder="Tool Name"
-            value={form.name}
-            onChange={handleChange}
-            required
-            className="w-full p-3 rounded bg-[#111827] border border-gray-700 placeholder-gray-400"
-          />
-          <input
-            type="text"
-            name="description"
-            placeholder="Short Description"
-            value={form.description}
-            onChange={handleChange}
-            required
-            className="w-full p-3 rounded bg-[#111827] border border-gray-700 placeholder-gray-400"
-          />
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleFileUpload}
-            className="w-full p-3 rounded bg-[#111827] border border-gray-700 text-gray-400"
-          />
+          <h2 className="text-xl font-semibold mb-4">
+            {editingToolId ? "✏️ Edit Tool" : "➕ Add New Tool"}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              name="name"
+              placeholder="Tool Name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              className="p-3 rounded bg-[#1b1b2f] border border-gray-700 placeholder-gray-400"
+            />
+            <input
+              type="text"
+              name="description"
+              placeholder="Short Description"
+              value={form.description}
+              onChange={handleChange}
+              required
+              className="p-3 rounded bg-[#1b1b2f] border border-gray-700 placeholder-gray-400"
+            />
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleFileUpload}
+              className="p-3 rounded bg-[#1b1b2f] border border-gray-700 text-gray-400"
+            />
+            <input
+              type="text"
+              name="link"
+              placeholder="Website Link"
+              value={form.link}
+              onChange={handleChange}
+              required
+              className="p-3 rounded bg-[#1b1b2f] border border-gray-700 placeholder-gray-400"
+            />
+            <select
+              name="category"
+              value={form.category || ""}
+              onChange={handleChange}
+              required
+              className="p-3 rounded bg-[#1b1b2f] border border-gray-700 text-white"
+            >
+              <option value="" disabled>
+                Select Category
+              </option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
           <textarea
             name="longDescription"
             placeholder="Detailed Description"
             value={form.longDescription}
             onChange={handleChange}
-            className="w-full p-3 rounded bg-[#111827] border border-gray-700 placeholder-gray-400 h-32"
+            className="w-full p-3 rounded bg-[#1b1b2f] border border-gray-700 placeholder-gray-400 h-32"
           />
-          <input
-            type="text"
-            name="link"
-            placeholder="Website Link"
-            value={form.link}
-            onChange={handleChange}
-            required
-            className="w-full p-3 rounded bg-[#111827] border border-gray-700 placeholder-gray-400"
-          />
-          <select
-            name="category"
-            value={form.category || ""}
-            onChange={handleChange}
-            required
-            className="w-full p-3 rounded bg-[#111827] border border-gray-700 text-white"
-          >
-            <option value="" disabled>
-              Select Category
-            </option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
 
           <button
             type="submit"
             disabled={loading}
-            className="bg-purple-800 px-6 py-3 rounded-lg font-semibold transition shadow"
+            className="w-full bg-purple-700 hover:bg-purple-800 px-6 py-3 rounded-lg font-semibold transition shadow-md"
           >
             {loading ? "Saving..." : editingToolId ? "Update Tool" : "Add Tool"}
           </button>
@@ -328,22 +332,22 @@ export default function AdminPage() {
           if (toolsInCategory.length === 0) return null;
           return (
             <div key={cat} className="mb-10">
-              <h2 className="text-2xl font-semibold mb-4">
+              <h2 className="text-2xl font-semibold mb-4 border-b border-white/20 pb-2">
                 {cat} ({toolsInCategory.length})
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {toolsInCategory.map((tool) => (
                   <div
                     key={tool.id}
-                    className="bg-white/5 p-5 rounded-xl border border-white/10 shadow-md"
+                    className="bg-[#2c2c44] p-5 rounded-xl border border-white/10 shadow-lg hover:shadow-purple-500/20 transition"
                   >
-                    <div className="flex items-start justify-between">
-                      <h3 className="text-xl font-semibold mb-2">{tool.name}</h3>
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="text-lg font-semibold">{tool.name}</h3>
                       <input
                         type="checkbox"
                         checked={selectedTools.includes(tool.id)}
                         onChange={() => toggleSelectTool(tool.id)}
-                        className="form-checkbox h-5 w-5 text-blue-500 bg-gray-800 border-gray-600 rounded"
+                        className="h-5 w-5 text-blue-500 bg-gray-800 border-gray-600 rounded"
                       />
                     </div>
                     <p className="text-sm text-gray-300 mb-3 line-clamp-2">
@@ -352,9 +356,7 @@ export default function AdminPage() {
                     <div className="flex gap-3 flex-wrap">
                       <button
                         className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm"
-                        onClick={() =>
-                          window.open(normalizeLink(tool.link), "_blank")
-                        }
+                        onClick={() => window.open(normalizeLink(tool.link), "_blank")}
                       >
                         View
                       </button>
