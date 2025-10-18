@@ -64,7 +64,8 @@ export default async function ToolPage({ params }) {
 
           {/* Right: Tool Info */}
           <div>
-            <h1 className="text-5xl font-extrabold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent leading-tight">
+            
+            <h1 className="text-5xl font-extrabold mb-4 leading-tight">
               {tool.name}
             </h1>
             <span className="inline-block text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-1 rounded-full mb-6 shadow-md">
@@ -75,7 +76,7 @@ export default async function ToolPage({ params }) {
             </p>
 
             {tool.longDescription && (
-              <p className="text-base text-gray-400 leading-7 mb-10 whitespace-pre-line">
+              <p className="text-base text-white leading-7 mb-10 whitespace-pre-line">
                 {tool.longDescription}
               </p>
             )}
