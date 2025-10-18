@@ -76,14 +76,14 @@ export default async function ToolPage({ params }) {
               {tool.category}
             </span>
 
-            <p className="text-lg text-gray-300 leading-relaxed mb-6">
+            <p className="font-bold text-xl text-white leading-relaxed mb-3">
               {tool.description}
             </p>
 
             {tool.longDescription && (
-              <div className="text-base text-white leading-7 mb-10 whitespace-pre-line">
+              <p className="text-base text-white leading-6 mb-5 whitespace-pre-line">
                 {tool.longDescription}
-              </div>
+              </p>
             )}
 
             <Link
