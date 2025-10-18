@@ -18,7 +18,7 @@ export const metadata = {
   description:
     "Discover the best AI tools in one place. Explore, compare, and find the perfect AI solutions for your needs at Aitoolcity. Your ultimate AI tools directory.",
   icons: {
-    icon: "/assets/favicon.ico", // ✅ path to your favicon
+    icon: "/assets/favicon.ico", 
   },
 };
 
