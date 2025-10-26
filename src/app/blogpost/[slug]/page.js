@@ -44,11 +44,8 @@ export default async function BlogPostPage({ params }) {
 
             {/* Blog Title */}
             <h1
-                className="text-5xl font-extrabold mb-6 bg-clip-text text-transparent"
-                style={{
-                    backgroundImage:
-                        "linear-gradient(to right, #C238A3, #F14B7F, #9200C2)",
-                }}
+                className="text-white text-5xl font-extrabold mb-6 bg-clip-text text-transparent"
+                
             >
                 {title}
             </h1>

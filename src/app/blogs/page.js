@@ -29,11 +29,8 @@ export default async function BlogPage() {
       {/* Header */}
       <div className="text-center mb-16">
         <h1
-          className="text-5xl font-extrabold mb-4 bg-clip-text text-transparent"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, #C238A3, #F14B7F, #9200C2)",
-          }}
+          className="text-white text-5xl font-extrabold mb-4 bg-clip-text text-transparent"
+          
         >
           Our Latest Blogs
         </h1>
@@ -64,7 +61,7 @@ export default async function BlogPage() {
                     "linear-gradient(to right, #C238A3, #F14B7F, #9200C2)",
                 }}
               >
-                <div className="h-full w-full rounded-3xl bg-[#130428]"></div>
+                <div className="h-full w-full rounded-3xl"></div>
               </div>
 
               {/* Image */}
@@ -91,11 +88,8 @@ export default async function BlogPage() {
                 </span>
 
                 <h2
-                  className="text-2xl font-bold mb-3 group-hover:opacity-90 transition bg-clip-text text-transparent"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(to right, #C238A3, #F14B7F, #9200C2)",
-                  }}
+                  className="text-white text-2xl font-bold mb-3 group-hover:opacity-90 transition bg-clip-text text-transparent"
+                  
                 >
                   {title}
                 </h2>
