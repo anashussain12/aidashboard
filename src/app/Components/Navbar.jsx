@@ -53,11 +53,11 @@ const Navbar = () => {
                   Home
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link className="hover:text-gray-400" href="/about">
                   About
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link className="hover:text-gray-400" href="/category">
                   Category
@@ -68,11 +68,11 @@ const Navbar = () => {
                   Blogs
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link className="hover:text-gray-400" href="/contact">
                   Contact
                 </Link>
-              </li>
+              </li> */}
             </ul>
 
             {/* Mobile Menu Button */}
@@ -117,7 +117,7 @@ const Navbar = () => {
                   Home
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   className="block hover:text-gray-400"
                   href="/about"
@@ -125,7 +125,7 @@ const Navbar = () => {
                 >
                   About
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   className="block hover:text-gray-400"
@@ -144,7 +144,7 @@ const Navbar = () => {
                   Blog
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   className="block hover:text-gray-400"
                   href="/contact"
@@ -152,7 +152,7 @@ const Navbar = () => {
                 >
                   Contact
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <button className="w-full mt-6 px-4 py-2 bg-[#9901BF] text-white rounded-lg">
                   Submit a tool

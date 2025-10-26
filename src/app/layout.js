@@ -16,7 +16,12 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata = { /* ... your metadata ... */ };
+export const metadata = { 
+  title: "AI Tool City - Discover the Best AI Tools",
+  description:
+    "Explore a curated collection of AI tools designed to boost your productivity and creativity. Find the perfect AI solution for your needs today!" ,
+};
+
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
