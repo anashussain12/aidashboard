@@ -68,11 +68,6 @@ const Navbar = () => {
                   Blogs
                 </Link>
               </li>
-              {/* <li>
-                <Link className="hover:text-gray-400" href="/contact">
-                  Contact
-                </Link>
-              </li> */}
             </ul>
             <div className="md:hidden">
               <button
