@@ -117,15 +117,6 @@ const Navbar = () => {
                   Home
                 </Link>
               </li>
-              {/* <li>
-                <Link
-                  className="block hover:text-gray-400"
-                  href="/about"
-                  onClick={toggleSidebar}
-                >
-                  About
-                </Link>
-              </li> */}
               <li>
                 <Link
                   className="block hover:text-gray-400"
@@ -144,7 +135,7 @@ const Navbar = () => {
                   Blog
                 </Link>
               </li>
-              
+
               <li>
                 <button className="w-full mt-6 px-4 py-2 bg-[#9901BF] text-white rounded-lg">
                   Submit a tool
