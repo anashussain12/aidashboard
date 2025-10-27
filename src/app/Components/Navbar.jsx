@@ -74,8 +74,6 @@ const Navbar = () => {
                 </Link>
               </li> */}
             </ul>
-
-            {/* Mobile Menu Button */}
             <div className="md:hidden">
               <button
                 className="text-2xl focus:outline-none"
@@ -92,8 +90,6 @@ const Navbar = () => {
             onClick={toggleSidebar}
           ></div>
         )}
-
-        {/* Sidebar */}
         {isSidebarOpen && (
           <div className="fixed top-0 left-0 w-64 h-full border bg-[#341166] border-[#4f075c99] text-white z-50">
             <button
