@@ -86,8 +86,6 @@ const Navbar = () => {
             </div>
           </div>
         )}
-
-        {/* Overlay Background when Sidebar is Open */}
         {isSidebarOpen && (
           <div
             className="fixed inset-0 bg-black opacity-50 z-40"
