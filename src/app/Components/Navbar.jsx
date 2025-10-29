@@ -45,8 +45,6 @@ const Navbar = () => {
             <div className="text-3xl font-black">
               <Link href="/">#aitoolcity</Link>
             </div>
-
-            {/* Navigation Links for Desktop */}
             <ul className="hidden md:flex space-x-8">
               <li>
                 <Link className="hover:text-gray-400" href="/">
