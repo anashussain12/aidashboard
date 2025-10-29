@@ -17,7 +17,7 @@ const geistMono = localFont({
 });
 
 export const metadata = { 
-  title: "AI Tool City - Discover the Best AI Tools",
+  title: "AI Tool City - Your Ultimate AI Tools Directory ",
   description:
     "Explore a curated collection of AI tools designed to boost your productivity and creativity. Find the perfect AI solution for your needs today!" ,
 };
