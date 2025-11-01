@@ -42,7 +42,6 @@ export default async function BlogPostPage({ params }) {
                 <Image src={imageUrl} alt={title} fill className="object-cover" />
             </div>
 
-            {/* Blog Title */}
             <h1
                 className="text-white text-5xl font-extrabold mb-6 bg-clip-text text-transparent"
                 

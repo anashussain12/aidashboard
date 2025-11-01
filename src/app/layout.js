@@ -16,10 +16,10 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata = { 
+export const metadata = {
   title: "AI Tool City - Your Ultimate AI Tools Directory ",
   description:
-    "Explore a curated collection of AI tools designed to boost your productivity and creativity. Find the perfect AI solution for your needs today!" ,
+    "Explore a curated collection of AI tools designed to boost your productivity and creativity. Find the perfect AI solution for your needs today!",
 };
 
 
