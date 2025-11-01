@@ -37,7 +37,6 @@ export default async function BlogPostPage({ params }) {
 
     return (
         <article className="min-h-screen px-6 py-20 max-w-4xl mx-auto text-white">
-            {/* Blog Image */}
             <div className="relative w-full h-96 mb-12 rounded-3xl overflow-hidden">
                 <Image src={imageUrl} alt={title} fill className="object-cover" />
             </div>
