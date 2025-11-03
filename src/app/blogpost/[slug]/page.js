@@ -47,8 +47,6 @@ export default async function BlogPostPage({ params }) {
             >
                 {title}
             </h1>
-            {/* </h1> */}
-
             <p className="text-gray-300 mb-6">{description}</p>
 
             <div className="prose prose-lg max-w-none text-gray-200">
