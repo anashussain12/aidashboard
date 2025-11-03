@@ -58,7 +58,6 @@ export default async function BlogPage() {
                 <div className="h-full w-full rounded-3xl"></div>
               </div>
 
-              {/* Image */}
               <div className="relative h-64 overflow-hidden rounded-t-3xl">
                 <Image
                   src={imageUrl}
