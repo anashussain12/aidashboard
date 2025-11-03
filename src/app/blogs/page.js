@@ -35,7 +35,6 @@ export default async function BlogPage() {
         </p>
       </div>
 
-      {/* Blog Grid */}
       <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
         {data.map((article) => {
           const { id, title, description, slug, image, author } = article;
