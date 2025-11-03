@@ -48,7 +48,6 @@ export default async function BlogPage() {
               key={id}
               className="group relative backdrop-blur-lg border border-white/10 rounded-3xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden flex flex-col"
             >
-              {/* Hover Gradient Border */}
               <div
                 className="absolute inset-0 rounded-3xl p-[2px] opacity-0 group-hover:opacity-100 transition duration-500"
                 style={{
