@@ -23,7 +23,6 @@ export default async function BlogPage() {
       className="min-h-screen max-w-7xl mx-auto px-6 py-20"
     
     >
-      {/* Header */}
       <div className="text-center mb-16">
         <h1
           className="text-white text-5xl font-extrabold mb-4 bg-clip-text text-transparent"
