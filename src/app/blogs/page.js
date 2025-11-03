@@ -67,7 +67,6 @@ export default async function BlogPage() {
                 />
               </div>
 
-              {/* Content */}
               <div className="relative p-6 flex flex-col flex-grow z-10 text-white">
                 <span
                   className="inline-block w-fit px-3 py-1 mb-3 text-xs font-medium rounded-full shadow"
