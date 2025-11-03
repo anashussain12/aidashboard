@@ -21,7 +21,6 @@ export default async function BlogPostPage({ params }) {
         return <p className="text-center text-gray-500">Blog not found.</p>;
     }
 
-    // ✅ Handle both cases: blog.attributes OR direct fields
     const attributes = blog.attributes || blog;
 
     const title = attributes.title || "Untitled";
