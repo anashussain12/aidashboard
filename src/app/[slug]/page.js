@@ -65,8 +65,6 @@ export default async function ToolPage({ params }) {
               priority
             />
           </div>
-
-          {/* Right: Tool Info */}
           <div className="self-start">
             <h1 className="text-5xl font-extrabold mb-4 leading-tight">
               {tool.name}
