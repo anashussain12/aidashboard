@@ -49,7 +49,6 @@ export default async function ToolPage({ params }) {
       </Head>
 
       <main className="min-h-screen text-white px-6 py-16">
-        {/* Hero / Tool Overview */}
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <div className="relative md:sticky md:top-24 self-start">
             <div className="absolute inset-0 bg-purple-600/20 blur-3xl rounded-full -z-10"></div>
