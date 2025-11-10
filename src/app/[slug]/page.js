@@ -55,7 +55,6 @@ export default async function ToolPage({ params }) {
           <div className="relative md:sticky md:top-24 self-start">
             <div className="absolute inset-0 bg-purple-600/20 blur-3xl rounded-full -z-10"></div>
 
-            {/* Keep natural aspect; avoid forcing a fixed height */}
             <Image
               src={toolImage}
               alt={`${tool.name} preview`}
