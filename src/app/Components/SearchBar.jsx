@@ -34,7 +34,6 @@ const SearchBar = ({
         )}
       </div>
 
-      {/* Category Filters */}
       <div className="flex flex-wrap justify-center gap-2">
         {categories.map((filter) => (
           <button
