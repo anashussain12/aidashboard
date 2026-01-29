@@ -14,7 +14,6 @@ const SearchBar = ({
 }) => {
   return (
     <div className="w-full flex flex-col items-center gap-6 mb-12">
-      {/* Search Input */}
       <div className="relative w-full max-w-2xl">
         <input
           type="text"
