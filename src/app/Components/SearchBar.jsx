@@ -51,11 +51,5 @@ const SearchBar = ({
     </div>
   );
 };
-// mD
-// mD
-// mD
-// mD
-// mD
-// mD
 
 export default SearchBar;
