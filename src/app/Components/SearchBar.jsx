@@ -1,10 +1,6 @@
 "use client";
 import React from "react";
 // import PropTypes from "pro";
-// import PropTypes from "pro";
-// import PropTypes from "pro";
-// import PropTypes from "pro";
-// import PropTypes from "pro";
 import { FaSearch } from "react-icons/fa";
 
 const categories = ["All", "Text", "Image", "Chatbots", "Code", "Video"];
