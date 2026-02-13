@@ -2,6 +2,7 @@
 import React from "react";
 // import PropTypes from "
 // import PropTypes from "
+// import PropTypes from "
 import { FaSearch } from "react-icons/fa";
 
 const categories = ["All", "Text", "Image", "Chatbots", "Code", "Video"];
